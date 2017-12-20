@@ -865,6 +865,7 @@ norm.
     :init
     (progn
       (setq TeX-command-default "latexmk"
+            TeX-command-force "latexmk"
             TeX-engine 'lualatex
             TeX-auto-save t
             TeX-parse-self t

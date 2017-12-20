@@ -20,6 +20,9 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-bundler'
+Plug 'tpope/vim-rake'
 Plug 'tpope/vim-endwise'
 Plug 'othree/yajs.vim'
 Plug 'gerw/vim-HiLinkTrace'
@@ -28,7 +31,7 @@ Plug 'neomake/neomake'
 Plug 'Shougo/denite.nvim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'fatih/vim-go'
-
+Plug 'sbdchd/neoformat'
 
 call plug#end()
 
@@ -173,5 +176,4 @@ let g:airline#extensions#tabline#left_alt_sep = ''
 let delimitMate_expand_cr = 2
 
 " nvim plugins
-let g:neomake_javascript_enabled_makers = ['eslint']
 let g:deoplete#enable_at_startup = 1

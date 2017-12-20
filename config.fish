@@ -15,3 +15,9 @@ export FZF_DEFAULT_COMMAND='ag -g ""'
 # export go paths
 set -x GOPATH ~/Code/golang
 set -gx PATH $GOPATH/bin $PATH
+
+# export yarn paths
+set -x YARNBIN (yarn global bin)
+set -gx PATH $YARNBIN $PATH
+
+eval (python3 -m virtualfish)

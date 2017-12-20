@@ -4,17 +4,94 @@
 #+PROPERTY: tangle "~/.dotfiles/tmux.conf"
 
 * Preface
-After having used ~org-babel~ to configure my Emacs settings, I just enjoyed it
-so much that I've decided to redo all my dotfiles as literate programming
-documents that will automatically create my dotfiles.
-
-** Tmux
 I discovered Tmux while using Vim, and it was love at first sight. I won't
 claim I am a power user, not at all. I'm still having trouble with the whole
 window/frames thing that Tmux uses. But just being able to have multiple "tabs"
 open and doing very different tasks was awesome.
+
 * General settings
+Disable the small delay caused by Tmux waiting to see if a sequence is going to
+be part of a function or meta key sequence.
+
+** Tmux general settings
 #+BEGIN_SRC conf
-  (buffer-file-name)
-  NOT A TEST
+  set -s escape-time 0
+#+END_SRC
+
+Then set the amount of history remembered for each *window*.
+#+BEGIN_SRC conf
+  set -g history-limit 5000
+#+END_SRC
+
+Next, the amount of time messages and such are displayed.
+#+BEGIN_SRC conf
+  set -g display-time 4000
+#+END_SRC
+
+Update the status bar every five seconds instead of fifteen, mostly used in
+conjunction with the music script so it can update itself often enough.
+#+BEGIN_SRC conf
+  set -g status-interval 5
+#+END_SRC
+
+And disable the ~repeat-time~ function as all it does is allow you to keep typing
+commands for a short period after the last one has been issued, this is a source
+of a lot of slow down when switching quickly between windows, panes etc.
+#+BEGIN_SRC conf
+  set -g repeat-time 0
+#+END_SRC
+** Terminal overrides
+Mostly relevant for OS X and some color issues with Neovim.
+
+This first one is a utility needed to give Tmux access to ~pbcopy~ and ~pbpaste~,
+it's installed via Homebrew on OS X via ~brew install reattach-to-user-namespace~.
+#+BEGIN_SRC conf
+  set -g default-command "reattach-to-user-namespace -l $SHELL"
+#+END_SRC
+
+And then we need to override the color space used so that colors in Neovim
+aren't completely messed up (this seemed to be a problem specifically with
+iTerm) and force it to tell programs it supports 256 colors.
+#+BEGIN_SRC conf
+  set -ga terminal-overrides ',*:Tc'
+  set -g default-terminal "screen-256color"
+#+END_SRC
+* Key bindings
+** General keybindings
+Although I use Vim in both Emacs and on the command line, it's still cumbersome
+in Tmux so I just stick with Emacs bindings here for invoking the status line.
+#+BEGIN_SRC conf
+  set -g status-keys emacs
+#+END_SRC
+
+However, when actually doing things in Tmux (like copying) I'd like to move
+around like I do in Vim.
+#+BEGIN_SRC conf
+  setw -g mode-keys vi
+#+END_SRC
+
+And then we allow it to aggressively resize it's window. Because why wouldn't
+you.
+#+BEGIN_SRC conf
+  set -g aggressive-resize on
+#+END_SRC
+** Prefix key
+I have used ~C-a~ for so long that I can't even remember what the default Tmux
+prefix key is any more... and I've switched to using ~;~ instead of ~:~ for invoking
+commands in Vim so we'll do the same here as well.
+#+BEGIN_SRC conf
+  set -g prefix C-a
+  unbind-key C-a
+  bind-key C-a send-prefix
+
+  bind \; command-prompt
+#+END_SRC
+** Copying and pasting
+Since we're using Vim mode keys and OS X we need to fix how copy and pasting in
+the terminal works. We'll bind ~v~ to start copying and ~y/RET~ to copy to ~pbcopy~.
+#+BEGIN_SRC conf
+  bind-key -t vi-copy 'v' begin-selection
+  bind-key -t vi-copy 'y' copy-pipe 'reattach-to-user-namespace pbcopy'
+  unbind -t vi-copy Enter
+  bind-key -t vi-copy Enter copy-pipe 'reattach-to-user-namespace pbcopy'
 #+END_SRC
