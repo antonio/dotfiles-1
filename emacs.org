@@ -494,6 +494,23 @@ don't remember.
     (progn
     (setq uniquify-buffer-name-style 'forward)))
 #+END_SRC
+*** Help
+Emacs has amazing documentation and builtin help pages and functions and
+everything, it explains more or less anything that you need to know. Functions,
+variables, modes, how to say hello in 100+ languages and so on. There's not a
+lot of configuration that we'll do here, but we'll do a few keybindings of our
+own.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package help
+    :general
+    (amalthea--leader-key-def
+      :keymaps 'normal
+      "h" '(:ignore t :which-key "help")
+      "h f" '(counsel-describe-function :which-key "describe function")
+      "h v" '(counsel-describe-variable :which-key "describe variable"))
+    :config (temp-buffer-resize-mode))
+#+END_SRC
 ** Async
 Emacs is famously singlethreaded, painfully so at times. ~async~ is a reasonably
 simple package that gives you some easy ways to do things asyncronously in
