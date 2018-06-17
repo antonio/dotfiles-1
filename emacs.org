@@ -273,6 +273,10 @@ just feels so... wrong. So we'll use it. And abuse it.
     :demand t
     :config (evil-mode))
 #+END_SRC
+** Keybindings
+For the most part, I'll try to keep the bindings local to their specific
+packages, but a lot of bindings don't really have a package that they are
+specific to and as such we'll need to configure them from here.
 * Core settings and packages
 There's a lot of settings that needs to be tweaked for Emacs to be somewhat of a
 modern editor, and there's also a bunch of packages that I consider core to my
@@ -503,6 +507,7 @@ own.
 
 #+BEGIN_SRC emacs-lisp
   (use-package help
+    :commands temp-buffer-resize-mode
     :general
     (amalthea--leader-key-def
       :keymaps 'normal
@@ -627,6 +632,11 @@ when we commit using Magit.
   (use-package diff-hl
     :commands (diff-hl-magit-post-refresh global-diff-hl-mode)
     :defines diff-hl-margin-symbols-alist
+    :general
+    (amalthea--leader-key-def
+      :keymaps 'normal
+      "g j" '(diff-hl-next-hunk :which-key "next hunk")
+      "g k" '(diff-hl-previous-hunk :which-key "previous hunk"))
     :init
     (progn
       (setq diff-hl-margin-symbols-alist
