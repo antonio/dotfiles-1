@@ -273,10 +273,19 @@ just feels so... wrong. So we'll use it. And abuse it.
     :demand t
     :config (evil-mode))
 #+END_SRC
-** Keybindings
+** Bindings
 For the most part, I'll try to keep the bindings local to their specific
 packages, but a lot of bindings don't really have a package that they are
 specific to and as such we'll need to configure them from here.
+
+*** Files
+#+BEGIN_SRC emacs-lisp
+  (amalthea--leader-key-def
+    :keymaps 'normal
+    "f d" '(:ignore t :which-key "dotfiles")
+    "f d e" '(find-file (expand-file-name (concat "emacs.org" amalthea--emacs-dir)) :which-key "emacs.org")
+    "f d c" '(amalthea--tangle-byte-compile-org :which-key "byte compile init.el"))
+#+END_SRC
 * Core settings and packages
 There's a lot of settings that needs to be tweaked for Emacs to be somewhat of a
 modern editor, and there's also a bunch of packages that I consider core to my
@@ -903,6 +912,10 @@ woodoo here, just install and enable.
   (use-package flycheck
     :commands global-flycheck-mode
     :init (global-flycheck-mode t))
+
+  (use-package flycheck-package
+    :after flycheck
+    :init (flycheck-package-setup))
 #+END_SRC
 
 However, there's this really neat package called ~flycheck-inline~ that displays
@@ -915,6 +928,13 @@ to line breaks and such.
     :after flycheck
     :commands flycheck-inline-mode
     :init (flycheck-inline-mode))
+#+END_SRC
+*** Snippets
+Yay
+
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :init (yas-global-mode t))
 #+END_SRC
 * Outro
 And this is finally it, we can now run the post init hook and reset back all the
